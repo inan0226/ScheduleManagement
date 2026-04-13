@@ -17,6 +17,7 @@ public class Schedule extends BaseEntity {
     private Long id;
     @Column(length = 50, nullable = false)
     private String name;
+    private String title;
     @Column(length = 50, nullable = false)
     private String content;
     private String author;
@@ -27,5 +28,9 @@ public class Schedule extends BaseEntity {
         this.content = content;
         this.author = author;
         this.password = password;
+    }
+    public void updateSchedule(String author, String title) {
+        this.author = author;
+        this.title = title;
     }
 }

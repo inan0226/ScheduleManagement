@@ -1,10 +1,11 @@
 package com.example.schedulemanagement.sevice;
 
-import com.example.schedulemanagement.dto.CreateScheduleRequest;
-import com.example.schedulemanagement.dto.CreateScheduleResponse;
-import com.example.schedulemanagement.dto.GetScheduleResponse;
+import com.example.schedulemanagement.Exception.InvalidPasswordException;
+import com.example.schedulemanagement.Exception.ScheduleNotFoundException;
+import com.example.schedulemanagement.dto.*;
 import com.example.schedulemanagement.entity.Schedule;
 import com.example.schedulemanagement.repository.ScheduleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +58,27 @@ public class ScheduleSevice {
         return dtos;
     }
 
+    public PatchScheduleResponse updateSchedule(UpdateScheduleRequest request, long id) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() -> new ScheduleNotFoundException());
+        boolean isMatch = schedule.getPassword().equals(request.getPassword());
+        if (!isMatch) {
+            throw new InvalidPasswordException();
+        }
+        String newAuthor = request.getAuthor();
+        String newTitle = request.getTitle();
+        if (newAuthor.isBlank() && newTitle.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+        schedule.updateSchedule(newAuthor, newTitle);
+
+        return new PatchScheduleResponse(
+                schedule.getId(),
+                schedule.getName(),
+                schedule.getContent(),
+                schedule.getAuthor(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
 
 }
