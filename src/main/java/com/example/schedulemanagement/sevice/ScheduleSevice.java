@@ -5,7 +5,6 @@ import com.example.schedulemanagement.Exception.ScheduleNotFoundException;
 import com.example.schedulemanagement.dto.*;
 import com.example.schedulemanagement.entity.Schedule;
 import com.example.schedulemanagement.repository.ScheduleRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +22,7 @@ public class ScheduleSevice {
     public CreateScheduleResponse createSchedule(CreateScheduleRequest request) {
         Schedule schedule = new Schedule(
                 request.getName(),
+                request.getTitle(),
                 request.getContent(),
                 request.getAuthor(),
                 request.getPassword()
@@ -33,6 +33,7 @@ public class ScheduleSevice {
         return new CreateScheduleResponse(
                 savedSchedule.getId(),
                 savedSchedule.getName(),
+                savedSchedule.getTitle(),
                 savedSchedule.getContent(),
                 savedSchedule.getAuthor(),
                 savedSchedule.getCreatedAt(),
@@ -48,6 +49,7 @@ public class ScheduleSevice {
             GetScheduleResponse dto = new GetScheduleResponse(
                     schedule.getId(),
                     schedule.getName(),
+                    schedule.getTitle(),
                     schedule.getContent(),
                     schedule.getAuthor(),
                     schedule.getCreatedAt(),
@@ -74,6 +76,7 @@ public class ScheduleSevice {
         return new PatchScheduleResponse(
                 schedule.getId(),
                 schedule.getName(),
+                schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getAuthor(),
                 schedule.getCreatedAt(),
