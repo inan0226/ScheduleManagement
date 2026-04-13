@@ -43,6 +43,18 @@ public class ScheduleController {
         }
 
     }
+    @DeleteMapping("/schedules/{id}")
+    public ResponseEntity<Void> deleteSchedule(@RequestBody DeleteScheduleRequest request, long id) {
+        try{
+            scheduleSevice.deleteSchedule(request, id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }catch (ScheduleNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (InvalidPasswordException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
 
 
 }

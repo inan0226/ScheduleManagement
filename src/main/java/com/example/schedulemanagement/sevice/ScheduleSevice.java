@@ -80,5 +80,12 @@ public class ScheduleSevice {
                 schedule.getModifiedAt()
         );
     }
-
+    public void deleteSchedule(DeleteScheduleRequest request,long id) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() -> new ScheduleNotFoundException());
+        boolean isMatch = schedule.getPassword().equals(request.getPassword());
+        if (!isMatch) {
+            throw new InvalidPasswordException();
+        }
+        scheduleRepository.delete(schedule);
+    }
 }
