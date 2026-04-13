@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ScheduleSevice {
+public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
@@ -83,7 +83,8 @@ public class ScheduleSevice {
                 schedule.getModifiedAt()
         );
     }
-    public void deleteSchedule(DeleteScheduleRequest request,long id) {
+
+    public void deleteSchedule(DeleteScheduleRequest request, long id) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(() -> new ScheduleNotFoundException());
         boolean isMatch = schedule.getPassword().equals(request.getPassword());
         if (!isMatch) {
